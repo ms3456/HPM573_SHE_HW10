@@ -36,6 +36,12 @@ class ParametersFixed():
         # treatment relative risk
         self._treatmentRR = 0
 
+        # annual treatment cost
+        if self._therapy == Therapies.NONE:
+            self._annualTreatmentCost = 0
+        else:
+            self._annualTreatmentCost = Data.AC_COST
+
         # calculate transition probabilities depending of which therapy options is in use
         if therapy == Therapies.NONE:
             self._prob_matrix = Data.TRANS_MATRIX
@@ -63,6 +69,8 @@ class ParametersFixed():
     def get_annual_state_cost(self,state):
         return self._StateCost[state.value]
 
+    def get_annual_treatment_cost(self):
+        return self._annualTreatmentCost
 
 def calculate_prob_matrix_anticoag():
     """ :returns transition probability matrix under anticoagulation use"""

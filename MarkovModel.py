@@ -161,10 +161,18 @@ class PatientCostUtilityMonitor:
         # update cost
         # if STROKE will occur
         if next_state in [P.HealthStats.STROKE]:
-            cost += self._param.get_annual_state_cost(next_state)
+            cost = self._param.get_annual_state_cost(next_state)
         # if POST_STROKE will occur
         if next_state in [P.HealthStats.POST_STROKE]:
-            cost += self._param.get_annual_state_cost(next_state)
+            cost = self._param.get_annual_state_cost(next_state)
+
+        # add the cost of treatment
+        # if DEATH will occur
+        if next_state in [P.HealthStats.DEATH]:
+            cost += 0.5 * self._param.get_annual_treatment_cost() * self._param.get_delta_t()
+        else:
+            cost += 1 * self._param.get_annual_treatment_cost() * self._param.get_delta_t()
+
 
         #update utility
         utility = 0.5 * (self._param.get_annual_state_utility(current_state) +
